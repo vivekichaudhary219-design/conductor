@@ -10,4 +10,13 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+
+  app.use(
+    "/ws",
+    createProxyMiddleware({
+      target: target,
+      changeOrigin: true,
+      ws: true,
+    })
+  );
 };

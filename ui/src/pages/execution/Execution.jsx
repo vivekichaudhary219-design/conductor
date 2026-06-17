@@ -29,6 +29,7 @@ import { Helmet } from "react-helmet";
 import sharedStyles from "../styles";
 import rison from "rison";
 import { useWorkflow } from "../../data/workflow";
+import { useWorkflowWebSocket } from "../../hooks/useWorkflowWebSocket";
 
 const maxWindowWidth = window.innerWidth;
 const INIT_DRAWER_WIDTH = 650;
@@ -122,6 +123,15 @@ export default function Execution() {
     isFetching,
     refetch: refresh,
   } = useWorkflow(match.params.id);
+
+  const handleLiveUpdate = useCallback(() => {
+    refresh();
+  }, [refresh]);
+
+  const { connected: wsConnected } = useWorkflowWebSocket(
+    match.params.id,
+    handleLiveUpdate
+  );
 
   const [isFullWidth, setIsFullWidth] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -230,6 +240,25 @@ export default function Execution() {
                     Definition
                   </NavLink>
                 </div>
+                <Tooltip
+                  title={
+                    wsConnected
+                      ? "Live updates active"
+                      : "Live updates disconnected"
+                  }
+                >
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      backgroundColor: wsConnected ? "#4caf50" : "#9e9e9e",
+                      marginRight: 10,
+                      alignSelf: "center",
+                    }}
+                  />
+                </Tooltip>
                 <SecondaryButton onClick={refresh} style={{ marginRight: 10 }}>
                   Refresh
                 </SecondaryButton>

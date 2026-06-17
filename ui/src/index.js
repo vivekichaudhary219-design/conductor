@@ -9,6 +9,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { getBasename } from "./utils/helpers";
+import { WebSocketProvider } from "./plugins/WebSocketProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,8 +27,9 @@ ReactDOM.render(
       <BrowserRouter basename={getBasename()}>
         <CssBaseline />
         <ReactQueryDevtools initialIsOpen={true} />
-
-        <App />
+        <WebSocketProvider>
+          <App />
+        </WebSocketProvider>
       </BrowserRouter>
     </ThemeProvider>
   </QueryClientProvider>,

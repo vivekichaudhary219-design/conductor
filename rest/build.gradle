@@ -4,6 +4,7 @@ dependencies {
     implementation project(':conductor-core')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     implementation "com.netflix.runtime:health-api:${revHealth}"
 
